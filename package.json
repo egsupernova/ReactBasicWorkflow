@@ -3,19 +3,19 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "dependencies": {
-
-  },
+  "dependencies": {},
   "devDependencies": {
     "autoprefixer": "^7.1.1",
-    "postcss-cssnext": "^2.11.0",
-    "webpack": "^3.0.0",
+    "css-loader": "^0.28.4",
+    "extract-text-webpack-plugin": "^2.1.2",
     "postcss": "^6.0.4",
-    "postcss-loader": "^2.0.6"
+    "postcss-cssnext": "^2.11.0",
+    "postcss-loader": "^2.0.6",
+    "webpack": "^3.0.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "author": "Sergio Expósito",
   "license": "ISC"
 }
