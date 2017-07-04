@@ -67,9 +67,12 @@
 /* 0 */
 /***/ (function(module, exports, __webpack_require__) {
 
-const css = __webpack_require__(1);
-console.log("Hola webpack");
+"use strict";
 
+
+__webpack_require__(1);
+
+console.log("Hola webpack");
 
 /***/ }),
 /* 1 */

@@ -1,2 +1,2 @@
-const css = require('./app.css');
+import './app.css';
 console.log("Hola webpack");
