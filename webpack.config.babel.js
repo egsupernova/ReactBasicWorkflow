@@ -33,9 +33,10 @@ function getPlugins() {
     if(prod){
         plugins.push(
             new optimize.UglifyJsPlugin({comments:false}),
-            new cleanWebpackPlugin(['src/public/*.*'] , {verbose: true,}),
-            new HotModuleReplacementPlugin()
+            new cleanWebpackPlugin(['src/public/*.*'] , {verbose: true,})
         );
+    }else{
+        plugins.push(new HotModuleReplacementPlugin());
     }
     return plugins;
 }
@@ -50,8 +51,6 @@ module.exports =  {
         devtool: getDevtool(),
         entry:[
             'react-hot-loader/patch',
-            'webpack-dev-server/client?http://localhost:9000',
-            'webpack/hot/only-dev-server',
             './src/index.js'
         ],
         output:{
