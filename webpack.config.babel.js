@@ -1,14 +1,15 @@
 //Dependencies
 import path from 'path';
-import webpack, {optimize} from 'webpack';
+import webpack, {optimize , HotModuleReplacementPlugin } from 'webpack';
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
+import cleanWebpackPlugin from 'clean-webpack-plugin';
 
-const env = process.env.NODE_ENV === 'production';
+const prod = process.env.NODE_ENV === 'production';
 
 function getDevtool() {
     let devtool;
-    env ? devtool = false : devtool = 'cheap-module-eval-source-map';
+    prod ? devtool = false : devtool = 'cheap-module-eval-source-map';
     return devtool;
 }
 function getPlugins() {
@@ -23,12 +24,18 @@ function getPlugins() {
                      'process.env': {
                        'NODE_ENV': JSON.stringify('production')
                      }
+                 }),
+                 new optimize.CommonsChunkPlugin({
+                     name: 'common'
                  })
             );
-    if(env){
-        plugins.push(new optimize.UglifyJsPlugin({
-            comments:false
-        }));
+    if(prod){
+        plugins.push(
+            new optimize.UglifyJsPlugin({comments:false}),
+            new cleanWebpackPlugin(['src/public/*.*'] , {verbose: true,})
+        );
+    }else{
+        plugins.push(new HotModuleReplacementPlugin())
     }
     return plugins;
 }
@@ -41,9 +48,12 @@ module.exports =  {
         target:"web",
         context: path.join(__dirname),
         devtool: getDevtool(),
-        entry:{
-            path: path.join(__dirname, 'src/index.js'),
-        },
+        entry:[
+            'react-hot-loader/patch',
+            'webpack-dev-server/client?http://localhost:9000',
+            'webpack/hot/only-dev-server',
+            './src/index'
+        ],
         output:{
             path: path.join(__dirname, 'src/public'),
             filename: '[name].bundle.js'
@@ -74,7 +84,11 @@ module.exports =  {
         plugins:getPlugins(),
         devServer:{
             contentBase: path.join(__dirname,"public"),
-            compress:true,
-            port:9000
+            port:9000,
+            hot:true,
+            historyApiFallback: true,
+            stats: {
+                colors: true // color is life
+            }
         }
 }

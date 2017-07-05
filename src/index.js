@@ -1,23 +1,22 @@
-//Dependencies
-import React, {Component} from 'react';
-import {render} from 'react-dom';
-//ASSETS
+
+import { AppContainer } from 'react-hot-loader'; // required
+import React from 'react';
+import ReactDOM from 'react-dom';
+import App from './App'; // App
 import './app.css';
 
-class Componente extends Component {
-    constructor(props) {
-        super(props);
-        this.state={
-            name:"Sergi"
-        }
-    }
-    render(){
-        return(
-            <div>
-                <h1>Hola {this.state.name}</h1>
-            </div>
-        );
-    }
-}
+const mountApp = document.getElementById('app');
 
-render(<Componente/>, document.getElementById('app'));
+ReactDOM.render(
+    <AppContainer component={App} />,
+    mountApp
+);
+
+if (module.hot) {
+    module.hot.accept('./App', () => {
+        ReactDOM.render(
+            <AppContainer component={require('./App').default} />,
+            mountApp
+        );
+    });
+}
