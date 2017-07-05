@@ -27,15 +27,15 @@ function getPlugins() {
                  }),
                  new optimize.CommonsChunkPlugin({
                      name: 'common'
-                 })
+                 }),
+                
             );
     if(prod){
         plugins.push(
             new optimize.UglifyJsPlugin({comments:false}),
-            new cleanWebpackPlugin(['src/public/*.*'] , {verbose: true,})
+            new cleanWebpackPlugin(['src/public/*.*'] , {verbose: true,}),
+            new HotModuleReplacementPlugin()
         );
-    }else{
-        plugins.push(new HotModuleReplacementPlugin())
     }
     return plugins;
 }
@@ -52,7 +52,7 @@ module.exports =  {
             'react-hot-loader/patch',
             'webpack-dev-server/client?http://localhost:9000',
             'webpack/hot/only-dev-server',
-            './src/index'
+            './src/index.js'
         ],
         output:{
             path: path.join(__dirname, 'src/public'),
