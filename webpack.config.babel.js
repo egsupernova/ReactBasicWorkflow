@@ -28,7 +28,7 @@ function getPlugins() {
                  new optimize.CommonsChunkPlugin({
                      name: 'common'
                  }),
-                
+
             );
     if(prod){
         plugins.push(
@@ -74,7 +74,7 @@ module.exports =  {
                 },
                 {
                     test: /\.js$/,
-                    loaders:['babel-loader'],
+                    loaders:['babel-loader','eslint-loader'],
                     include: path.join(__dirname,'src'),
                     exclude: path.join(__dirname,'node_modules')
                 }
@@ -87,7 +87,7 @@ module.exports =  {
             hot:true,
             historyApiFallback: true,
             stats: {
-                colors: true // color is life
+                colors: true
             }
         }
 }
