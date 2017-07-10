@@ -84,6 +84,7 @@ module.exports =  {
             hot:true,
             historyApiFallback: true,
             overlay:true,
+            compress:true,
             stats: {
                 colors: true
             }
