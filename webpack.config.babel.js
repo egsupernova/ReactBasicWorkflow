@@ -5,8 +5,8 @@ import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import cleanWebpackPlugin from 'clean-webpack-plugin';
 
-const prod = process.env.NODE_ENV === 'production';
 
+const prod = process.env.NODE_ENV === 'production';
 function getDevtool() {
     let devtool;
     prod ? devtool = false : devtool = 'cheap-module-eval-source-map';
@@ -27,7 +27,7 @@ function getPlugins() {
                  }),
                  new optimize.CommonsChunkPlugin({
                      name: 'common'
-                 }),
+                 })
 
             );
     if(prod){
@@ -42,9 +42,6 @@ function getPlugins() {
 }
 
 module.exports =  {
-
-    /*const ifDev = then => (env === 'dev' ? then : null);
-    const ifProd = then => (env === 'prod' ? then : null);*/
 
         target:"web",
         context: path.join(__dirname),
@@ -86,8 +83,9 @@ module.exports =  {
             port:9000,
             hot:true,
             historyApiFallback: true,
+            overlay:true,
             stats: {
                 colors: true
             }
         }
-}
+};
