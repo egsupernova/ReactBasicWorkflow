@@ -1,0 +1,29 @@
+{
+    "plugins": [
+        "react"
+    ],
+    "parserOptions": {
+        "ecmaVersion": 6,
+        "sourceType": "module",
+        "ecmaFeatures": {
+            "jsx": true
+        }
+    },
+    "env":{
+        "browser": true,
+        "node": true
+    },
+    "extends": [
+        "eslint:recommended",
+        "plugin:react/recommended"
+    ],
+    "rules": {
+        "eqeqeq":"error",
+        "no-empty-function":"warn",
+        "vars-on-top":"error",
+        "max-len":["warn",{"code": 80,"tabWidth":4}],
+        "no-var":"error",
+        "max-lines":["warn", {}],
+        "react/prop-types": "off"
+    }
+}
