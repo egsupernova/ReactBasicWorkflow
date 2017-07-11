@@ -24,6 +24,8 @@
         "max-len":["warn",{"code": 80,"tabWidth":4}],
         "no-var":"error",
         "max-lines":["warn", {}],
-        "react/prop-types": "off"
+        "react/prop-types": "off",
+        "space-in-parens": ["error", "never"],
+        "semi":"error"
     }
 }

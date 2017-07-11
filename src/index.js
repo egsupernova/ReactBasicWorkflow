@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 import App from './App'; // App
 import './app.css';
 
-const mountApp = document.getElementById('app');
+const mountApp = document.getElementById('app');    
 
 ReactDOM.render(
   <AppContainer component={App} />,
@@ -17,5 +17,5 @@ if (module.hot) {
       <AppContainer component={require('./App').default} />, mountApp
     );
   });
-  
+
 }

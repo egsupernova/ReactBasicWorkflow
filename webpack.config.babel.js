@@ -7,13 +7,58 @@ import cleanWebpackPlugin from 'clean-webpack-plugin';
 
 
 const prod = process.env.NODE_ENV === 'production';
-function getDevtool() {
+const getDevtool = () => {
     let devtool;
     prod ? devtool = false : devtool = 'cheap-module-eval-source-map';
     return devtool;
-}
-function getPlugins() {
-    let plugins=[]
+};
+const getLoaders = () =>({
+        rules:[
+            {
+                test:/\.css$/,
+                use: ExtractTextPlugin.extract({
+                    use:[{
+                        loader: 'css-loader',
+                        options:{
+                            importLoaders: 1,
+                            sourceMap:true
+                        },
+                    },
+                        'postcss-loader'
+                    ]
+                })
+            },
+            {
+                test: /\.js$/,
+                use:['babel-loader',
+                    {
+                        loader: 'eslint-loader',
+                        options:{
+                            format:"html",
+                            fix:true
+                        }
+                    }
+                ],
+                include: path.join(__dirname,'src'),
+                exclude: path.join(__dirname,'node_modules')
+            },
+            {
+                test: /\.(png|jpg|gif)$/,
+                use: [
+                    {
+                        loader: 'url-loader',
+                        options: {
+                            limit: 8192,
+                            mimetype:'image/svg+xml'
+                        }
+                    }
+                ]
+            }
+
+        ]
+});
+const getPlugins = () => {
+    let plugins=[];
     plugins.push(new ExtractTextPlugin('styles.css'),
                  new HtmlWebpackPlugin({
                     title: 'My-Workspace',
@@ -32,61 +77,38 @@ function getPlugins() {
             );
     if(prod){
         plugins.push(
-            new optimize.UglifyJsPlugin({comments:false}),
+            new optimize.UglifyJsPlugin ({comments:false}),
             new cleanWebpackPlugin(['src/public/*.*'] , {verbose: true,})
         );
     }else{
         plugins.push(new HotModuleReplacementPlugin());
     }
     return plugins;
-}
+};
+const getDevServer = () =>({
+    contentBase: path.join(__dirname,"public"),
+    port:9000,
+    hot:true,
+    historyApiFallback: true,
+    overlay:true,
+    compress:true,
+    stats: {
+        colors: true
+    }
+});
+const getOutput = () =>({
+	path: path.join(__dirname, 'src/public'),
+    filename: '[name].bundle.js'
+});
 
 module.exports =  {
 
         target:"web",
         context: path.join(__dirname),
         devtool: getDevtool(),
-        entry:[
-            'react-hot-loader/patch',
-            './src/index.js'
-        ],
-        output:{
-            path: path.join(__dirname, 'src/public'),
-            filename: '[name].bundle.js'
-        },
-        module:{
-            rules:[{
-                test:/\.css$/,
-                use: ExtractTextPlugin.extract({
-                        use:[{
-                                loader: 'css-loader',
-                                options:{
-                                    importLoaders: 1,
-                                    sourceMap:true
-                                },
-                            },
-                            'postcss-loader'
-                        ]
-                    })
-                },
-                {
-                    test: /\.js$/,
-                    loaders:['babel-loader','eslint-loader'],
-                    include: path.join(__dirname,'src'),
-                    exclude: path.join(__dirname,'node_modules')
-                }
-            ]
-        },
-        plugins:getPlugins(),
-        devServer:{
-            contentBase: path.join(__dirname,"public"),
-            port:9000,
-            hot:true,
-            historyApiFallback: true,
-            overlay:true,
-            compress:true,
-            stats: {
-                colors: true
-            }
-        }
+        entry:['react-hot-loader/patch','./src/index.js'],
+        output: getOutput(),
+        module: getLoaders(),
+        plugins: getPlugins(),
+        devServer: getDevServer()
 };
